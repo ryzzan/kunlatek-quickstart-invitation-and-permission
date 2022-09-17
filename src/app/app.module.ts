@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
-import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
-import { SharedModule } from './modules/shared/shared.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LogoutConfirmationDialogComponent } from './components/logout-confirmation-dialog/logout-confirmation-dialog.component';
-import { HttpClientModule } from '@angular/common/http';
-import { RemoveConfirmationDialogComponent } from './components/remove-confirmation-dialog/remove-confirmation-dialog.component';
-import { MyErrorHandler } from './utils/error-handler';
 import { LoginComponent } from './components/login/login.component';
+import { LogoutConfirmationDialogComponent } from './components/logout-confirmation-dialog/logout-confirmation-dialog.component';
+import { RemoveConfirmationDialogComponent } from './components/remove-confirmation-dialog/remove-confirmation-dialog.component';
+import { SharedModule } from './modules/shared/shared.module';
+import { MyErrorHandler } from './utils/error-handler';
 
 @NgModule({
   declarations: [
@@ -26,7 +25,7 @@ import { LoginComponent } from './components/login/login.component';
     HttpClientModule,
     SocialLoginModule,
     SharedModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     MyErrorHandler,
