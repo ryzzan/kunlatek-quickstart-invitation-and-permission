@@ -25,7 +25,7 @@ export class ErrorCatchingInterceptor implements HttpInterceptor {
           await this._refreshToken.refreshToken();
         } else {
           const message = this._errorHandler.apiErrorMessage(error.message);
-          this._snackBarService.openSnackBar(message);
+          this._snackBarService.open(message);
           sessionStorage.clear();
           this._router.navigate(['/']);
         }
