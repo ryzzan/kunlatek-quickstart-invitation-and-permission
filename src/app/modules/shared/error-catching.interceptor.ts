@@ -11,6 +11,7 @@ import { MyErrorHandler } from 'src/app/utils/error-handler';
 import { RefreshTokenService } from './services/refresh-token.service';
 import { SnackBarService } from './services/snackbar.service';
 
+const getBaseUrlRex = new RegExp('^.+?[^\/:](?=[?\/]|$)');
 @Injectable()
 export class ErrorCatchingInterceptor implements HttpInterceptor {
   constructor(private _refreshToken: RefreshTokenService, private _snackBarService: SnackBarService, private _errorHandler: MyErrorHandler, private _router: Router) { }
@@ -22,7 +23,8 @@ export class ErrorCatchingInterceptor implements HttpInterceptor {
       map((res: any) => res),
       catchError(async (error: any) => {
         if (error.logMessage === 'jwt expired') {
-          await this._refreshToken.refreshToken();
+          const [baseUrl] = getBaseUrlRex.exec(req.url) || [''];
+          await this._refreshToken.refreshToken(baseUrl);
         } else {
           const message = this._errorHandler.apiErrorMessage(error.message);
           this._snackBarService.open(message);
