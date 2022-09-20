@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { AppRoutingModule } from './app-routing.module';
@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutConfirmationDialogComponent } from './components/logout-confirmation-dialog/logout-confirmation-dialog.component';
 import { RemoveConfirmationDialogComponent } from './components/remove-confirmation-dialog/remove-confirmation-dialog.component';
+import { ErrorCatchingInterceptor } from './modules/shared/error-catching.interceptor';
 import { SharedModule } from './modules/shared/shared.module';
 import { MyErrorHandler } from './utils/error-handler';
 
@@ -29,6 +30,7 @@ import { MyErrorHandler } from './utils/error-handler';
   ],
   providers: [
     MyErrorHandler,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true },
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
