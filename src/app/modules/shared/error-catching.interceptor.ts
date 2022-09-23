@@ -3,18 +3,23 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest
-} from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, map, Observable } from 'rxjs';
-import { MyErrorHandler } from 'src/app/utils/error-handler';
-import { RefreshTokenService } from './services/refresh-token.service';
-import { SnackBarService } from './services/snackbar.service';
+} from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { catchError, map, Observable } from "rxjs";
+import { MyErrorHandler } from "src/app/utils/error-handler";
+import { RefreshTokenService } from "./services/refresh-token.service";
+import { SnackBarService } from "./services/snackbar.service";
 
-const getBaseUrlRex = new RegExp('^.+?[^\/:](?=[?\/]|$)');
+const getBaseUrlRex = new RegExp("^.+?[^/:](?=[?/]|$)");
 @Injectable()
 export class ErrorCatchingInterceptor implements HttpInterceptor {
-  constructor(private _refreshToken: RefreshTokenService, private _snackBarService: SnackBarService, private _errorHandler: MyErrorHandler, private _router: Router) { }
+  constructor(
+    private _refreshToken: RefreshTokenService,
+    private _snackBarService: SnackBarService,
+    private _errorHandler: MyErrorHandler,
+    private _router: Router
+  ) { }
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
@@ -22,14 +27,25 @@ export class ErrorCatchingInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       map((res: any) => res),
       catchError(async (error: any) => {
-        if (error.logMessage === 'jwt expired') {
-          const [baseUrl] = getBaseUrlRex.exec(req.url) || [''];
-          await this._refreshToken.refreshToken(baseUrl);
+        if (error.logMessage === "jwt expired") {
+          const [baseUrl] = getBaseUrlRex.exec(req.url) || [""];
+          this._refreshToken.refreshToken(baseUrl).catch((error: any) => {
+            const message = this._errorHandler.apiErrorMessage(
+              error.error.logMessage
+                ? error.error.logMessage
+                : error.error.message
+            );
+            this._snackBarService.open(message);
+            sessionStorage.clear();
+            this._router.navigate(["/"]);
+          });
         } else {
-          const message = this._errorHandler.apiErrorMessage(error.message);
+          const message = this._errorHandler.apiErrorMessage(
+            error.error.logMessage
+              ? error.error.logMessage
+              : error.error.message
+          );
           this._snackBarService.open(message);
-          sessionStorage.clear();
-          this._router.navigate(['/']);
         }
         return error;
       })
