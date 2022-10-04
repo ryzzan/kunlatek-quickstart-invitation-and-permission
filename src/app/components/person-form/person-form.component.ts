@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   ActivatedRoute, Router
 } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import {
   MyErrorHandler
 } from '../../utils/error-handler';
@@ -109,8 +110,8 @@ export class PersonFormComponent implements OnInit {
     const timestamp = this.addHours(new Date(this.mainDataForm.value.birthday), 0);
     this.mainDataForm.value.birthday = new Date(timestamp);
 
-    this._personFormService
-      .save(this.mainDataForm.value).then((res: any) => {
+    lastValueFrom(this._personFormService
+      .save(this.mainDataForm.value)).then((res: any) => {
         this.isLoading = false;
         const message = res.message;
         this._errorHandler.apiErrorMessage(res.message);

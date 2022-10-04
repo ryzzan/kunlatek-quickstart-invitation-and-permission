@@ -4,6 +4,7 @@ import {
 } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
+import { lastValueFrom } from "rxjs";
 import { MyPerformance } from "src/app/utils/performance";
 
 import { MyErrorHandler } from "../../utils/error-handler";
@@ -56,9 +57,9 @@ export class InvitationFormComponent {
         this.isAddModule = !this.invitationFormId;
 
         if (this.invitationFormId) {
-          this.invitationFormToEdit = await this._invitationFormService.find(
+          this.invitationFormToEdit = lastValueFrom(this._invitationFormService.find(
             this.invitationFormId
-          );
+          ));
           this.invitationFormForm.patchValue(this.invitationFormToEdit.data);
         }
         this.checkOptionsCreation([], 0);
@@ -97,8 +98,8 @@ export class InvitationFormComponent {
           }
         )}]}`;
 
-        this._invitationFormService
-          .permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]"))
+        lastValueFrom(this._invitationFormService
+          .permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]")))
           .then((result: any) => {
             this.filteredPermissionGroupId = result.data.result;
             this.isLoading = false;
@@ -131,14 +132,14 @@ export class InvitationFormComponent {
 
     try {
       if (this.isAddModule) {
-        await this._invitationFormService.save(this.invitationFormForm.value);
+        lastValueFrom(this._invitationFormService.save(this.invitationFormForm.value));
       }
 
       if (!this.isAddModule) {
-        await this._invitationFormService.update(
+        lastValueFrom(this._invitationFormService.update(
           this.invitationFormForm.value,
           this.invitationFormId
-        );
+        ));
       }
       this.redirectTo("main/__invitation");
 
@@ -159,7 +160,7 @@ export class InvitationFormComponent {
   };
   refreshToken = async () => {
     try {
-      const res: any = await this._invitationFormService.refreshToken();
+      const res: any = lastValueFrom(this._invitationFormService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

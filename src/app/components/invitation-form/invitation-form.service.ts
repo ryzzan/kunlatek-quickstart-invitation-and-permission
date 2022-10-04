@@ -7,7 +7,7 @@ import { Injectable } from "@angular/core";
 export class InvitationFormService {
   BASE_URL = "http://localhost:3000";
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) { }
 
   getAll(filter: string = "") {
     return this._httpClient
@@ -15,8 +15,7 @@ export class InvitationFormService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      })
-      .toPromise();
+      });
   }
 
   delete(id: string) {
@@ -25,8 +24,7 @@ export class InvitationFormService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      })
-      .toPromise();
+      });
   }
 
   save(body: any) {
@@ -35,8 +33,7 @@ export class InvitationFormService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      })
-      .toPromise();
+      });
   }
 
   update(body: any, id: string) {
@@ -45,8 +42,7 @@ export class InvitationFormService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      })
-      .toPromise();
+      });
   }
 
   find(id: string) {
@@ -55,8 +51,7 @@ export class InvitationFormService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      })
-      .toPromise();
+      });
   }
 
   permissionGroupIdSelectObjectGetAll(filter: string = "") {
@@ -65,8 +60,7 @@ export class InvitationFormService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      })
-      .toPromise();
+      });
   }
 
   refreshToken() {
@@ -75,7 +69,6 @@ export class InvitationFormService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("refreshToken")}`,
         },
-      })
-      .toPromise();
+      });
   }
 }

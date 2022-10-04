@@ -7,7 +7,7 @@ import { Injectable } from "@angular/core";
 export class RelatedUserTableService {
   BASE_URL = "http://localhost:3000";
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) { }
 
   getAll(filter: string = "") {
     return this._httpClient
@@ -15,8 +15,7 @@ export class RelatedUserTableService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      })
-      .toPromise();
+      });
   }
 
   delete(id: string) {
@@ -25,8 +24,7 @@ export class RelatedUserTableService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      })
-      .toPromise();
+      });
   }
 
   find(id: string) {
@@ -35,8 +33,7 @@ export class RelatedUserTableService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      })
-      .toPromise();
+      });
   }
 
   refreshToken() {
@@ -45,7 +42,6 @@ export class RelatedUserTableService {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("refreshToken")}`,
         },
-      })
-      .toPromise();
+      });
   }
 }

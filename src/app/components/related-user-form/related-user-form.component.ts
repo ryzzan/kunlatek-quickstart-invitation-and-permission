@@ -5,6 +5,7 @@ import {
 } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
+import { lastValueFrom } from "rxjs";
 import { MyPerformance } from "src/app/utils/performance";
 import { MyErrorHandler } from "../../utils/error-handler";
 import { RelatedUserFormService } from "./related-user-form.service";
@@ -115,9 +116,9 @@ export class RelatedUserFormComponent {
         this.isAddModule = !this.relatedUserFormId;
 
         if (this.relatedUserFormId) {
-          this.relatedUserFormToEdit = await this._relatedUserFormService.find(
+          this.relatedUserFormToEdit = lastValueFrom(this._relatedUserFormService.find(
             this.relatedUserFormId
-          );
+          ));
 
           if (this.relatedUserFormToEdit.data.person) {
             this.relatedUserFormToEditEdited = {
@@ -179,8 +180,8 @@ export class RelatedUserFormComponent {
           }
         )}]}`;
 
-        this._relatedUserFormService
-          .permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]"))
+        lastValueFrom(this._relatedUserFormService
+          .permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]")))
           .then((result: any) => {
             this.filteredPermissionGroupId = result.data.result;
             this.isLoading = false;
@@ -213,14 +214,14 @@ export class RelatedUserFormComponent {
 
     try {
       if (this.isAddModule) {
-        await this._relatedUserFormService.save(this.relatedUserFormForm.value);
+        lastValueFrom(this._relatedUserFormService.save(this.relatedUserFormForm.value));
       }
 
       if (!this.isAddModule) {
-        await this._relatedUserFormService.update(
+        lastValueFrom(this._relatedUserFormService.update(
           this.relatedUserFormForm.value,
           this.relatedUserFormId
-        );
+        ));
       }
       this.redirectTo("main/__related-user");
 
@@ -241,7 +242,7 @@ export class RelatedUserFormComponent {
   };
   refreshToken = async () => {
     try {
-      const res: any = await this._relatedUserFormService.refreshToken();
+      const res: any = lastValueFrom(this._relatedUserFormService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

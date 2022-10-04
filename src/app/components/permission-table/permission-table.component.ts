@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormGroupDirective } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
+import { lastValueFrom } from "rxjs";
 import { MyErrorHandler } from "../../utils/error-handler";
 import { RemoveConfirmationDialogComponent } from "../remove-confirmation-dialog/remove-confirmation-dialog.component";
 import { PermissionTableService } from "./permission-table.service";
@@ -70,8 +71,8 @@ export class PermissionTableComponent {
   }
 
   setPermissionTableService = (filter: string = "") => {
-    this._permissionTableService
-      .getAll(filter)
+    lastValueFrom(this._permissionTableService
+      .getAll(filter))
       .then((result: any) => {
         this.permissionTableDataSource = result.data.result;
         this.isLoading = false;
@@ -103,7 +104,7 @@ export class PermissionTableComponent {
                 ? this._router.url.split(`/${this.permissionTableId}`)[0]
                 : this._router.url;
             this.isLoading = true;
-            await this._permissionTableService.delete(res.id);
+            lastValueFrom(this._permissionTableService.delete(res.id));
             this.redirectTo(routeToGo);
             this.isLoading = false;
           } catch (error: any) {
@@ -118,7 +119,7 @@ export class PermissionTableComponent {
 
   refreshToken = async () => {
     try {
-      const res: any = await this._permissionTableService.refreshToken();
+      const res: any = lastValueFrom(this._permissionTableService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

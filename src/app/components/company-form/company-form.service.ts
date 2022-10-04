@@ -9,12 +9,12 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 }) export class CompanyFormService {
   BASE_URL = environment.baseUrl;
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) { }
   save(body: any) {
     return this._httpClient.post(`${this.BASE_URL}/auth/signup`, body, {
       headers: {
         'Authorization': `Bearer ${sessionStorage.getItem('tokenToRegister')}`
       }
-    }).toPromise();
+    });
   };
 }

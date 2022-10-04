@@ -13,25 +13,24 @@ export enum SocialMedia {
 
 @Injectable({
   providedIn: 'root',
-}) 
+})
 export class AuthService {
   BASE_URL = environment.baseUrl;
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient) { }
 
   setAuthenticationToken = (code: string) => {
-    return this._httpClient.get(`${this.BASE_URL}/auth/token?code=${code}`)
-    .toPromise();
-  }
+    return this._httpClient.get(`${this.BASE_URL}/auth/token?code=${code}`);
+  };
 
   getUserData = (token: string) => {
     return this._httpClient.get(`${this.BASE_URL}/auth/login`, {
       headers: {
         'authorization': `Bearer ${token}`
       }
-    }).toPromise();
-  }
+    });
+  };
 
   signOut = async () => {
     sessionStorage.clear();
-  }
+  };
 }

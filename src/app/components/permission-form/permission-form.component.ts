@@ -4,6 +4,7 @@ import {
 } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
+import { lastValueFrom } from "rxjs";
 
 import { MyErrorHandler } from "../../utils/error-handler";
 import { PermissionFormService } from "./permission-form.service";
@@ -71,9 +72,9 @@ export class PermissionFormComponent {
         this.isAddModule = !this.permissionFormId;
 
         if (this.permissionFormId) {
-          this.permissionFormToEdit = await this._permissionFormService.find(
+          this.permissionFormToEdit = lastValueFrom(this._permissionFormService.find(
             this.permissionFormId
-          );
+          ));
           this.permissionFormForm.patchValue(this.permissionFormToEdit.data);
 
           (this.permissionFormForm.get(
@@ -128,7 +129,7 @@ export class PermissionFormComponent {
 
   setModuleIdSelectObject = async () => {
     try {
-      const array: any = await this._permissionFormService.moduleIdSelectObjectGetAll();
+      const array: any = lastValueFrom(this._permissionFormService.moduleIdSelectObjectGetAll());
       if (array.data?.result) {
         array.data?.result.map((object: any) => {
           this.moduleIdSelectObject.push({
@@ -145,7 +146,7 @@ export class PermissionFormComponent {
 
   setPermissionActionsSelectObject = async () => {
     try {
-      const array: any = await this._permissionFormService.permissionActionsSelectObjectGetAll();
+      const array: any = lastValueFrom(this._permissionFormService.permissionActionsSelectObjectGetAll());
       if (array.data?.result) {
         array.data?.result.map((object: any) => {
           this.permissionActionsSelectObject.push({
@@ -167,14 +168,14 @@ export class PermissionFormComponent {
 
     try {
       if (this.isAddModule) {
-        await this._permissionFormService.save(this.permissionFormForm.value);
+        lastValueFrom(this._permissionFormService.save(this.permissionFormForm.value));
       }
 
       if (!this.isAddModule) {
-        await this._permissionFormService.update(
+        lastValueFrom(this._permissionFormService.update(
           this.permissionFormForm.value,
           this.permissionFormId
-        );
+        ));
       }
       this.redirectTo("main/__permission-group");
 
@@ -195,7 +196,7 @@ export class PermissionFormComponent {
   };
   refreshToken = async () => {
     try {
-      const res: any = await this._permissionFormService.refreshToken();
+      const res: any = lastValueFrom(this._permissionFormService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);
