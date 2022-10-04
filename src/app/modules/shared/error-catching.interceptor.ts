@@ -31,9 +31,9 @@ export class ErrorCatchingInterceptor implements HttpInterceptor {
           const [baseUrl] = getBaseUrlRex.exec(req.url) || [""];
           this._refreshToken.refreshToken(baseUrl).catch((error: any) => {
             const message = this._errorHandler.apiErrorMessage(
-              error.error.logMessage
-                ? error.error.logMessage
-                : error.error.message
+              error.logMessage
+                ? error.logMessage
+                : error.message
             );
             this._snackBarService.open(message);
             sessionStorage.clear();
@@ -41,9 +41,9 @@ export class ErrorCatchingInterceptor implements HttpInterceptor {
           });
         } else {
           const message = this._errorHandler.apiErrorMessage(
-            error.error.logMessage
-              ? error.error.logMessage
-              : error.error.message
+            error.logMessage
+              ? error.logMessage
+              : error.message
           );
           this._snackBarService.open(message);
         }

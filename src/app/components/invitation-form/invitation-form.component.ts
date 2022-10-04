@@ -1,12 +1,9 @@
 import { Component } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroupDirective,
-  FormGroup,
-  Validators,
+  FormBuilder, FormGroup, FormGroupDirective, Validators
 } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MyPerformance } from "src/app/utils/performance";
 
 import { MyErrorHandler } from "../../utils/error-handler";
@@ -50,7 +47,7 @@ export class InvitationFormComponent {
     private _errorHandler: MyErrorHandler
   ) {
     try {
-      const modulePermissionToCheck: any = this.permissionsToCheck.find((item: any) => item.module.name === "Convites")
+      const modulePermissionToCheck: any = this.permissionsToCheck.find((item: any) => item.module.name === "Convites");
       this.updateOnePermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "updateOne").length > 0;
       this.createOnePermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "createOne").length > 0;
 
@@ -67,7 +64,7 @@ export class InvitationFormComponent {
         this.checkOptionsCreation([], 0);
       });
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.sendErrorMessage(message);
     }
 
@@ -106,20 +103,20 @@ export class InvitationFormComponent {
             this.filteredPermissionGroupId = result.data.result;
             this.isLoading = false;
           })
-          .catch(async (err) => {
-            if (err.error.logMessage === "jwt expired") {
+          .catch(async (error: any) => {
+            if (error.logMessage === "jwt expired") {
               await this.refreshToken();
               this.setFilteredPermissionGroupId();
             } else {
               const message = this._errorHandler.apiErrorMessage(
-                err.error.message
+                error.message
               );
               this.sendErrorMessage(message);
             }
           });
       }
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.sendErrorMessage(message);
     }
   };
@@ -147,11 +144,11 @@ export class InvitationFormComponent {
 
       this.isLoading = false;
     } catch (error: any) {
-      if (error.error.logMessage === "jwt expired") {
+      if (error.logMessage === "jwt expired") {
         await this.refreshToken();
         this.invitationFormSubmit(invitationFormDirective);
       } else {
-        const message = this._errorHandler.apiErrorMessage(error.error.message);
+        const message = this._errorHandler.apiErrorMessage(error.message);
         this.isLoading = false;
         this.sendErrorMessage(message);
       }
@@ -168,7 +165,7 @@ export class InvitationFormComponent {
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);
       }
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.isLoading = false;
       this.sendErrorMessage(message);
       sessionStorage.clear();

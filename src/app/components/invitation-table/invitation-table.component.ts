@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { FormBuilder, FormGroup, FormGroupDirective } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { RemoveConfirmationDialogComponent } from "../remove-confirmation-dialog/remove-confirmation-dialog.component";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MyErrorHandler } from "../../utils/error-handler";
+import { RemoveConfirmationDialogComponent } from "../remove-confirmation-dialog/remove-confirmation-dialog.component";
 import { InvitationTableService } from "./invitation-table.service";
-import { FormBuilder, FormGroupDirective, FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-invitation-table",
@@ -33,7 +33,7 @@ export class InvitationTableComponent {
     private _errorHandler: MyErrorHandler,
     private _invitationTableService: InvitationTableService
   ) {
-    const modulePermissionToCheck: any = this.permissionsToCheck.find((item: any) => item.module.name === "Convites")
+    const modulePermissionToCheck: any = this.permissionsToCheck.find((item: any) => item.module.name === "Convites");
     this.updateOnePermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "updateOne").length > 0;
     this.readPermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "read").length > 0;
     this.deleteOnePermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "deleteOne").length > 0;
@@ -45,7 +45,7 @@ export class InvitationTableComponent {
         this.invitationTableId = routeParams["id"];
       });
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.sendErrorMessage(message);
     }
     this.setInvitationTableService();
@@ -75,12 +75,12 @@ export class InvitationTableComponent {
         this.invitationTableDataSource = result.data.result;
         this.isLoading = false;
       })
-      .catch(async (err: any) => {
-        if (err.error.logMessage === "jwt expired") {
+      .catch(async (error: any) => {
+        if (error.logMessage === "jwt expired") {
           await this.refreshToken();
           this.setInvitationTableService();
         } else {
-          const message = this._errorHandler.apiErrorMessage(err.error.message);
+          const message = this._errorHandler.apiErrorMessage(error.message);
           this.isLoading = false;
           this.sendErrorMessage(message);
         }
@@ -107,7 +107,7 @@ export class InvitationTableComponent {
             this.isLoading = false;
           } catch (error: any) {
             const message = this._errorHandler.apiErrorMessage(
-              error.error.message
+              error.message
             );
             this.sendErrorMessage(message);
           }
@@ -123,7 +123,7 @@ export class InvitationTableComponent {
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);
       }
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.isLoading = false;
       this.sendErrorMessage(message);
       sessionStorage.clear();

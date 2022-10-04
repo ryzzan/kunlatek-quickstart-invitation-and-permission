@@ -1,13 +1,9 @@
 import { Component } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroupDirective,
-  FormGroup,
-  FormArray,
-  Validators,
+  FormArray, FormBuilder, FormGroup, FormGroupDirective, Validators
 } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute, Router } from "@angular/router";
 
 import { MyErrorHandler } from "../../utils/error-handler";
 import { PermissionFormService } from "./permission-form.service";
@@ -66,10 +62,10 @@ export class PermissionFormComponent {
     private _errorHandler: MyErrorHandler
   ) {
     try {
-      const modulePermissionToCheck: any = this.permissionsToCheck.find((item: any) => item.module.name === "Grupo de permissões")
+      const modulePermissionToCheck: any = this.permissionsToCheck.find((item: any) => item.module.name === "Grupo de permissões");
       this.updateOnePermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "updateOne").length > 0;
       this.createOnePermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "createOne").length > 0;
-      
+
       this._activatedRoute.params.subscribe(async (routeParams) => {
         this.permissionFormId = routeParams["id"];
         this.isAddModule = !this.permissionFormId;
@@ -99,7 +95,7 @@ export class PermissionFormComponent {
         );
       });
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.sendErrorMessage(message);
     }
 
@@ -142,7 +138,7 @@ export class PermissionFormComponent {
         });
       }
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.sendErrorMessage(message);
     }
   };
@@ -159,7 +155,7 @@ export class PermissionFormComponent {
         });
       }
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.sendErrorMessage(message);
     }
   };
@@ -184,11 +180,11 @@ export class PermissionFormComponent {
 
       this.isLoading = false;
     } catch (error: any) {
-      if (error.error.logMessage === "jwt expired") {
+      if (error.logMessage === "jwt expired") {
         await this.refreshToken();
         this.permissionFormSubmit(permissionFormDirective);
       } else {
-        const message = this._errorHandler.apiErrorMessage(error.error.message);
+        const message = this._errorHandler.apiErrorMessage(error.message);
         this.isLoading = false;
         this.sendErrorMessage(message);
       }
@@ -205,7 +201,7 @@ export class PermissionFormComponent {
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);
       }
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.isLoading = false;
       this.sendErrorMessage(message);
       sessionStorage.clear();

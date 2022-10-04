@@ -116,20 +116,20 @@ export class PersonFormComponent implements OnInit {
         this._errorHandler.apiErrorMessage(res.message);
         this.sendErrorMessage(message);
         this.router.navigate(['/login']);
-      }).catch((err) => {
+      }).catch((error: any) => {
         this.isLoading = false;
 
-        if (err.message) {
-          const message = err.message;
-          switch (err.message) {
+        if (error.message) {
+          const message = error.message;
+          switch (error.message) {
             case 'jwt expired':
-              this._errorHandler.apiErrorMessage(err.message);
+              this._errorHandler.apiErrorMessage(error.message);
               this.sendErrorMessage(message);
               this.router.navigate(['/login']);
               break;
 
             default:
-              this._errorHandler.apiErrorMessage(err.message);
+              this._errorHandler.apiErrorMessage(error.message);
               this.sendErrorMessage(message);
               break;
           }

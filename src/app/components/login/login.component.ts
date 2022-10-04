@@ -1,12 +1,12 @@
 import { Component } from "@angular/core";
 import { AuthService } from "./auth.service";
 
-import { MyErrorHandler } from "../../utils/error-handler";
 import { ActivatedRoute, Router } from "@angular/router";
+import { MyErrorHandler } from "../../utils/error-handler";
 
-import { UserInterface } from "../../interfaces/autentikigo";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { environment } from "src/environments/environment";
+import { UserInterface } from "../../interfaces/autentikigo";
 
 export interface ParamsI {
   token?: string;
@@ -45,12 +45,12 @@ export class LoginComponent {
   setAuthentication = async () => {
     this._auth.signOut();
     const params: ParamsI = this.route.snapshot.queryParams;
-    
+
     if (params.token) {
       const token = params.token;
-      try {        
+      try {
         const result: any = await this._auth
-                              .getUserData(token);
+          .getUserData(token);
         if (result?.statusCode === 200) {
           this.setSessionStorage(result.data);
           this.router.navigate(["/main"]);
@@ -62,7 +62,7 @@ export class LoginComponent {
         }
 
       } catch (error: any) {
-        const message = this._errorHandler.apiErrorMessage(error?.message);
+        const message = this._errorHandler.apiErrorMessage(error.message);
         this.sendErrorMessage(message);
       }
     }

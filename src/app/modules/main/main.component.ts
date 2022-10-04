@@ -17,7 +17,7 @@ import { routes } from './main-routing.module';
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
-}) 
+})
 export class MainComponent implements OnInit {
   permissionGroupsOwners;
   permissionIndex = 0;
@@ -45,16 +45,16 @@ export class MainComponent implements OnInit {
       let permissions;
       if (permissionString !== null) {
         permissions = JSON.parse(permissionString);
-        this.permissionGroupsOwners =  permissions;
+        this.permissionGroupsOwners = permissions;
       }
-      
+
       permissions[this.permissionIndex].modulePermissions.forEach((permission: any) => {
         this.menu.push({
           router: `/main/${permission.module.route}`,
           title: `${permission.module.name}`,
           icon: 'dashboard',
           itens: [],
-        })
+        });
       });
     }
 
@@ -68,16 +68,16 @@ export class MainComponent implements OnInit {
                 title: child.path,
                 icon: 'dashboard',
                 itens: [],
-              })
+              });
             }
           });
         }
       });
     }
   };
-  
-  ngOnInit(): void {};  
-  
+
+  ngOnInit(): void { };
+
   logoutOpenDialog = (): void => {
     const logoutDialogRef = this.logoutDialog.open(LogoutConfirmationDialogComponent, {
       data: {
@@ -92,19 +92,19 @@ export class MainComponent implements OnInit {
 
   logout = () => {
     this._auth.signOut()
-    .then(res => {
-      this.router.navigate(['/']);
-    })
-    .catch(err => {
-      const message = this._errorHandler.apiErrorMessage(err.message);
-      this.sendErrorMessage(message);
-    })
+      .then(res => {
+        this.router.navigate(['/']);
+      })
+      .catch((error: any) => {
+        const message = this._errorHandler.apiErrorMessage(error.message);
+        this.sendErrorMessage(message);
+      });
   };
 
   changePermissionIndex = (index: number) => {
     this.permissionIndex = index;
     this.setMenuByPermission();
-  }
+  };
 
   setMenuByPermission = () => {
     if (sessionStorage.getItem('permission') !== null) {
@@ -113,23 +113,23 @@ export class MainComponent implements OnInit {
       let permissions;
       if (permissionString !== null) {
         permissions = JSON.parse(permissionString);
-        this.permissionGroupsOwners =  permissions;
+        this.permissionGroupsOwners = permissions;
       }
-      
+
       permissions[this.permissionIndex].permissions.forEach((permission: any) => {
         this.menu.push({
           router: `/main/${permission.module.route}`,
           title: `${permission.module.name}`,
           icon: 'dashboard',
           itens: [],
-        })
+        });
       });
     }
-  }
+  };
 
   sendErrorMessage = (errorMessage: string) => {
     this._snackbar.open(errorMessage, undefined, {
-        duration: 4 * 1000,
+      duration: 4 * 1000,
     });
-  }
+  };
 }

@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { FormBuilder, FormGroup, FormGroupDirective } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { RemoveConfirmationDialogComponent } from "../remove-confirmation-dialog/remove-confirmation-dialog.component";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MyErrorHandler } from "../../utils/error-handler";
+import { RemoveConfirmationDialogComponent } from "../remove-confirmation-dialog/remove-confirmation-dialog.component";
 import { PermissionTableService } from "./permission-table.service";
-import { FormBuilder, FormGroupDirective, FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-permission-table",
@@ -33,11 +33,11 @@ export class PermissionTableComponent {
     private _errorHandler: MyErrorHandler,
     private _permissionTableService: PermissionTableService
   ) {
-    const modulePermissionToCheck: any = this.permissionsToCheck.find((item: any) => item.module.name === "Grupo de permissões")
+    const modulePermissionToCheck: any = this.permissionsToCheck.find((item: any) => item.module.name === "Grupo de permissões");
     this.updateOnePermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "updateOne").length > 0;
     this.readPermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "read").length > 0;
     this.deleteOnePermission = modulePermissionToCheck.permissionActions.filter((item: any) => item.name === "deleteOne").length > 0;
-    
+
     this.permissionTableSearchForm = this._formBuilder.group({
       searchInput: [null, []],
     });
@@ -46,7 +46,7 @@ export class PermissionTableComponent {
         this.permissionTableId = routeParams["id"];
       });
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.sendErrorMessage(message);
     }
     this.setPermissionTableService();
@@ -76,12 +76,12 @@ export class PermissionTableComponent {
         this.permissionTableDataSource = result.data.result;
         this.isLoading = false;
       })
-      .catch(async (err: any) => {
-        if (err.error.logMessage === "jwt expired") {
+      .catch(async (error: any) => {
+        if (error.logMessage === "jwt expired") {
           await this.refreshToken();
           this.setPermissionTableService();
         } else {
-          const message = this._errorHandler.apiErrorMessage(err.error.message);
+          const message = this._errorHandler.apiErrorMessage(error.message);
           this.isLoading = false;
           this.sendErrorMessage(message);
         }
@@ -108,7 +108,7 @@ export class PermissionTableComponent {
             this.isLoading = false;
           } catch (error: any) {
             const message = this._errorHandler.apiErrorMessage(
-              error.error.message
+              error.message
             );
             this.sendErrorMessage(message);
           }
@@ -124,7 +124,7 @@ export class PermissionTableComponent {
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);
       }
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.error.message);
+      const message = this._errorHandler.apiErrorMessage(error.message);
       this.isLoading = false;
       this.sendErrorMessage(message);
       sessionStorage.clear();
