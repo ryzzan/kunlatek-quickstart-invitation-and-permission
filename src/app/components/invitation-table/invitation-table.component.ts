@@ -69,7 +69,7 @@ export class InvitationTableComponent {
     invitationTableDirective.resetForm();
   }
 
-  setInvitationTableService = (filter: string = "") => {
+  setInvitationTableService = async (filter: string = "") => {
     await lastValueFrom(this._invitationTableService
       .getAll(filter))
       .then((result: any) => {

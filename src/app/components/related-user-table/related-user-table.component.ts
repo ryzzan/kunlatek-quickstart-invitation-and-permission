@@ -70,7 +70,7 @@ export class RelatedUserTableComponent {
     relatedUserTableDirective.resetForm();
   }
 
-  setRelatedUserTableService = (filter: string = "") => {
+  setRelatedUserTableService = async (filter: string = "") => {
     await lastValueFrom(this._relatedUserTableService
       .getAll(filter))
       .then((result: any) => {

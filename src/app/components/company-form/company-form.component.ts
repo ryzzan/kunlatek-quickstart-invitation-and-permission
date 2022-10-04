@@ -94,7 +94,7 @@ export class CompanyFormComponent implements OnInit {
 
   };
 
-  companyFormSubmit() {
+  async companyFormSubmit() {
     this.isLoading = true;
     const timestamp = this.addHours(new Date(this.mainDataForm.value.birthday), 0);
     this.mainDataForm.value.birthday = new Date(timestamp);

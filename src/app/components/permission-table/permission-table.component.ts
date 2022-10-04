@@ -70,7 +70,7 @@ export class PermissionTableComponent {
     permissionTableDirective.resetForm();
   }
 
-  setPermissionTableService = (filter: string = "") => {
+  setPermissionTableService = async (filter: string = "") => {
     await lastValueFrom(this._permissionTableService
       .getAll(filter))
       .then((result: any) => {

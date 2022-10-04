@@ -9,7 +9,7 @@ import { lastValueFrom } from "rxjs";
 export class RefreshTokenService {
   constructor(private _httpClient: HttpClient) { }
 
-  refreshToken(url: string) {
+  async refreshToken(url: string) {
     return await lastValueFrom(this._httpClient.get(
       `${url}/auth/refresh-token`, {
       headers: {
