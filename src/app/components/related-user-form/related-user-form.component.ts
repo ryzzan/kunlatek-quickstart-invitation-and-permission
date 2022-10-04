@@ -180,27 +180,22 @@ export class RelatedUserFormComponent {
           }
         )}]}`;
 
-        await lastValueFrom(this._relatedUserFormService
-          .permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]")))
-          .then((result: any) => {
-            this.filteredPermissionGroupId = result.data.result;
-            this.isLoading = false;
-          })
-          .catch(async (error: any) => {
-            if (error.logMessage === "jwt expired") {
-              await this.refreshToken();
-              this.setFilteredPermissionGroupId();
-            } else {
-              const message = this._errorHandler.apiErrorMessage(
-                error.message
-              );
-              this.sendErrorMessage(message);
-            }
-          });
+        const result: any = await lastValueFrom(this._relatedUserFormService
+          .permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]")));
+
+        this.filteredPermissionGroupId = result.data.result;
+        this.isLoading = false;
       }
     } catch (error: any) {
-      const message = this._errorHandler.apiErrorMessage(error.message);
-      this.sendErrorMessage(message);
+      if (error.logMessage === "jwt expired") {
+        await this.refreshToken();
+        this.setFilteredPermissionGroupId();
+      } else {
+        const message = this._errorHandler.apiErrorMessage(
+          error.message
+        );
+        this.sendErrorMessage(message);
+      }
     }
   };
   callSetFilteredPermissionGroupId = MyPerformance.debounce(() =>
@@ -255,12 +250,14 @@ export class RelatedUserFormComponent {
       this._router.navigate(["/"]);
     }
   };
-  redirectTo = (uri: string) => {
-    this._router
-      .navigateByUrl("/main", { skipLocationChange: true })
-      .then(() => {
-        this._router.navigate([uri]);
-      });
+  redirectTo = async (uri: string) => {
+    try {
+      await this._router.navigateByUrl('/main', { skipLocationChange: true });
+      this._router.navigate([uri]);
+    } catch (error: any) {
+      const message = this._errorHandler.apiErrorMessage(error.message);
+      this.sendErrorMessage(message);
+    }
   };
   checkOptionsCreation = async (functions: Array<Function>, index: number) => {
     const newIndex = index + 1;

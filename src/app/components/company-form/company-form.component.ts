@@ -98,31 +98,30 @@ export class CompanyFormComponent implements OnInit {
     this.isLoading = true;
     const timestamp = this.addHours(new Date(this.mainDataForm.value.birthday), 0);
     this.mainDataForm.value.birthday = new Date(timestamp);
+    try {
+      const result: any = await lastValueFrom(this._companyFormService.save(this.mainDataForm.value));
+      this.isLoading = false;
+      const message = result.message;
+      this._errorHandler.apiErrorMessage(result.message);
+      this.sendErrorMessage(message);
+      this.router.navigate(['/login']);
+    } catch (error: any) {
+      this.isLoading = false;
 
-    await lastValueFrom(this._companyFormService
-      .save(this.mainDataForm.value)).then((res: any) => {
-        this.isLoading = false;
-        const message = res.message;
-        this._errorHandler.apiErrorMessage(res.message);
-        this.sendErrorMessage(message);
-        this.router.navigate(['/login']);
-      }).catch((error: any) => {
-        this.isLoading = false;
+      if (error.message) {
+        const message = this._errorHandler.apiErrorMessage(error.message);
+        switch (error.message) {
+          case 'jwt expired':
+            this.sendErrorMessage(message);
+            this.router.navigate(['/login']);
+            break;
 
-        if (error.message) {
-          const message = this._errorHandler.apiErrorMessage(error.message);
-          switch (error.message) {
-            case 'jwt expired':
-              this.sendErrorMessage(message);
-              this.router.navigate(['/login']);
-              break;
-
-            default:
-              this.sendErrorMessage(message);
-              break;
-          }
+          default:
+            this.sendErrorMessage(message);
+            break;
         }
-      });
+      }
+    }
   }
 
   addHours = (date: Date, hours: number) => {

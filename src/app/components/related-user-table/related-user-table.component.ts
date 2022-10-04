@@ -71,22 +71,20 @@ export class RelatedUserTableComponent {
   }
 
   setRelatedUserTableService = async (filter: string = "") => {
-    await lastValueFrom(this._relatedUserTableService
-      .getAll(filter))
-      .then((result: any) => {
-        this.relatedUserTableDataSource = result.data.result;
+    try {
+      const result: any = await lastValueFrom(this._relatedUserTableService.getAll(filter));
+      this.relatedUserTableDataSource = result.data.result;
+      this.isLoading = false;
+    } catch (error: any) {
+      if (error.logMessage === "jwt expired") {
+        await this.refreshToken();
+        this.setRelatedUserTableService();
+      } else {
+        const message = this._errorHandler.apiErrorMessage(error.message);
         this.isLoading = false;
-      })
-      .catch(async (error: any) => {
-        if (error.logMessage === "jwt expired") {
-          await this.refreshToken();
-          this.setRelatedUserTableService();
-        } else {
-          const message = this._errorHandler.apiErrorMessage(error.message);
-          this.isLoading = false;
-          this.sendErrorMessage(message);
-        }
-      });
+        this.sendErrorMessage(message);
+      }
+    }
   };
 
   removeConfirmationDialogOpenDialog = (id: string) => {
@@ -133,12 +131,14 @@ export class RelatedUserTableComponent {
     }
   };
 
-  redirectTo = (uri: string) => {
-    this._router
-      .navigateByUrl("/main", { skipLocationChange: true })
-      .then(() => {
-        this._router.navigate([uri]);
-      });
+  redirectTo = async (uri: string) => {
+    try {
+      await this._router.navigateByUrl('/main', { skipLocationChange: true });
+      this._router.navigate([uri]);
+    } catch (error: any) {
+      const message = this._errorHandler.apiErrorMessage(error.message);
+      this.sendErrorMessage(message);
+    }
   };
 
   sendErrorMessage = (errorMessage: string) => {

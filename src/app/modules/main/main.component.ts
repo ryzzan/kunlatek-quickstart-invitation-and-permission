@@ -90,15 +90,13 @@ export class MainComponent implements OnInit {
     });
   };
 
-  logout = () => {
-    this._auth.signOut()
-      .then(res => {
-        this.router.navigate(['/']);
-      })
-      .catch((error: any) => {
-        const message = this._errorHandler.apiErrorMessage(error.message);
-        this.sendErrorMessage(message);
-      });
+  logout = async () => {
+    try {
+      await this._auth.signOut();
+    } catch (error: any) {
+      const message = this._errorHandler.apiErrorMessage(error.message);
+      this.sendErrorMessage(message);
+    }
   };
 
   changePermissionIndex = (index: number) => {
