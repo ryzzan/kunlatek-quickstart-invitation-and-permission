@@ -57,7 +57,7 @@ export class InvitationFormComponent {
         this.isAddModule = !this.invitationFormId;
 
         if (this.invitationFormId) {
-          this.invitationFormToEdit = lastValueFrom(this._invitationFormService.find(
+          this.invitationFormToEdit = await lastValueFrom(this._invitationFormService.find(
             this.invitationFormId
           ));
           this.invitationFormForm.patchValue(this.invitationFormToEdit.data);
@@ -98,7 +98,7 @@ export class InvitationFormComponent {
           }
         )}]}`;
 
-        lastValueFrom(this._invitationFormService
+        await lastValueFrom(this._invitationFormService
           .permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]")))
           .then((result: any) => {
             this.filteredPermissionGroupId = result.data.result;
@@ -132,11 +132,11 @@ export class InvitationFormComponent {
 
     try {
       if (this.isAddModule) {
-        lastValueFrom(this._invitationFormService.save(this.invitationFormForm.value));
+        await lastValueFrom(this._invitationFormService.save(this.invitationFormForm.value));
       }
 
       if (!this.isAddModule) {
-        lastValueFrom(this._invitationFormService.update(
+        await lastValueFrom(this._invitationFormService.update(
           this.invitationFormForm.value,
           this.invitationFormId
         ));
@@ -160,7 +160,7 @@ export class InvitationFormComponent {
   };
   refreshToken = async () => {
     try {
-      const res: any = lastValueFrom(this._invitationFormService.refreshToken());
+      const res: any = await lastValueFrom(this._invitationFormService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

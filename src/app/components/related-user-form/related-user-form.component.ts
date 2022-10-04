@@ -116,7 +116,7 @@ export class RelatedUserFormComponent {
         this.isAddModule = !this.relatedUserFormId;
 
         if (this.relatedUserFormId) {
-          this.relatedUserFormToEdit = lastValueFrom(this._relatedUserFormService.find(
+          this.relatedUserFormToEdit = await lastValueFrom(this._relatedUserFormService.find(
             this.relatedUserFormId
           ));
 
@@ -180,7 +180,7 @@ export class RelatedUserFormComponent {
           }
         )}]}`;
 
-        lastValueFrom(this._relatedUserFormService
+        await lastValueFrom(this._relatedUserFormService
           .permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]")))
           .then((result: any) => {
             this.filteredPermissionGroupId = result.data.result;
@@ -214,11 +214,11 @@ export class RelatedUserFormComponent {
 
     try {
       if (this.isAddModule) {
-        lastValueFrom(this._relatedUserFormService.save(this.relatedUserFormForm.value));
+        await lastValueFrom(this._relatedUserFormService.save(this.relatedUserFormForm.value));
       }
 
       if (!this.isAddModule) {
-        lastValueFrom(this._relatedUserFormService.update(
+        await lastValueFrom(this._relatedUserFormService.update(
           this.relatedUserFormForm.value,
           this.relatedUserFormId
         ));
@@ -242,7 +242,7 @@ export class RelatedUserFormComponent {
   };
   refreshToken = async () => {
     try {
-      const res: any = lastValueFrom(this._relatedUserFormService.refreshToken());
+      const res: any = await lastValueFrom(this._relatedUserFormService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

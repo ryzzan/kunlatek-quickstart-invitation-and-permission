@@ -71,7 +71,7 @@ export class PermissionTableComponent {
   }
 
   setPermissionTableService = (filter: string = "") => {
-    lastValueFrom(this._permissionTableService
+    await lastValueFrom(this._permissionTableService
       .getAll(filter))
       .then((result: any) => {
         this.permissionTableDataSource = result.data.result;
@@ -104,7 +104,7 @@ export class PermissionTableComponent {
                 ? this._router.url.split(`/${this.permissionTableId}`)[0]
                 : this._router.url;
             this.isLoading = true;
-            lastValueFrom(this._permissionTableService.delete(res.id));
+            await lastValueFrom(this._permissionTableService.delete(res.id));
             this.redirectTo(routeToGo);
             this.isLoading = false;
           } catch (error: any) {
@@ -119,7 +119,7 @@ export class PermissionTableComponent {
 
   refreshToken = async () => {
     try {
-      const res: any = lastValueFrom(this._permissionTableService.refreshToken());
+      const res: any = await lastValueFrom(this._permissionTableService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

@@ -99,7 +99,7 @@ export class CompanyFormComponent implements OnInit {
     const timestamp = this.addHours(new Date(this.mainDataForm.value.birthday), 0);
     this.mainDataForm.value.birthday = new Date(timestamp);
 
-    lastValueFrom(this._companyFormService
+    await lastValueFrom(this._companyFormService
       .save(this.mainDataForm.value)).then((res: any) => {
         this.isLoading = false;
         const message = res.message;

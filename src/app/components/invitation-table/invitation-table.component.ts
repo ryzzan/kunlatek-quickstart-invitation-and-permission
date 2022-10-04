@@ -70,7 +70,7 @@ export class InvitationTableComponent {
   }
 
   setInvitationTableService = (filter: string = "") => {
-    lastValueFrom(this._invitationTableService
+    await lastValueFrom(this._invitationTableService
       .getAll(filter))
       .then((result: any) => {
         this.invitationTableDataSource = result.data.result;
@@ -103,7 +103,7 @@ export class InvitationTableComponent {
                 ? this._router.url.split(`/${this.invitationTableId}`)[0]
                 : this._router.url;
             this.isLoading = true;
-            lastValueFrom(this._invitationTableService.delete(res.id));
+            await lastValueFrom(this._invitationTableService.delete(res.id));
             this.redirectTo(routeToGo);
             this.isLoading = false;
           } catch (error: any) {
@@ -118,7 +118,7 @@ export class InvitationTableComponent {
 
   refreshToken = async () => {
     try {
-      const res: any = lastValueFrom(this._invitationTableService.refreshToken());
+      const res: any = await lastValueFrom(this._invitationTableService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

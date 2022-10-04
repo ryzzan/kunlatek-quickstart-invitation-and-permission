@@ -110,7 +110,7 @@ export class PersonFormComponent implements OnInit {
     const timestamp = this.addHours(new Date(this.mainDataForm.value.birthday), 0);
     this.mainDataForm.value.birthday = new Date(timestamp);
 
-    lastValueFrom(this._personFormService
+    await lastValueFrom(this._personFormService
       .save(this.mainDataForm.value)).then((res: any) => {
         this.isLoading = false;
         const message = res.message;

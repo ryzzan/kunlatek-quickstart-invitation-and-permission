@@ -72,7 +72,7 @@ export class PermissionFormComponent {
         this.isAddModule = !this.permissionFormId;
 
         if (this.permissionFormId) {
-          this.permissionFormToEdit = lastValueFrom(this._permissionFormService.find(
+          this.permissionFormToEdit = await lastValueFrom(this._permissionFormService.find(
             this.permissionFormId
           ));
           this.permissionFormForm.patchValue(this.permissionFormToEdit.data);
@@ -129,7 +129,7 @@ export class PermissionFormComponent {
 
   setModuleIdSelectObject = async () => {
     try {
-      const array: any = lastValueFrom(this._permissionFormService.moduleIdSelectObjectGetAll());
+      const array: any = await lastValueFrom(this._permissionFormService.moduleIdSelectObjectGetAll());
       if (array.data?.result) {
         array.data?.result.map((object: any) => {
           this.moduleIdSelectObject.push({
@@ -146,7 +146,7 @@ export class PermissionFormComponent {
 
   setPermissionActionsSelectObject = async () => {
     try {
-      const array: any = lastValueFrom(this._permissionFormService.permissionActionsSelectObjectGetAll());
+      const array: any = await lastValueFrom(this._permissionFormService.permissionActionsSelectObjectGetAll());
       if (array.data?.result) {
         array.data?.result.map((object: any) => {
           this.permissionActionsSelectObject.push({
@@ -168,11 +168,11 @@ export class PermissionFormComponent {
 
     try {
       if (this.isAddModule) {
-        lastValueFrom(this._permissionFormService.save(this.permissionFormForm.value));
+        await lastValueFrom(this._permissionFormService.save(this.permissionFormForm.value));
       }
 
       if (!this.isAddModule) {
-        lastValueFrom(this._permissionFormService.update(
+        await lastValueFrom(this._permissionFormService.update(
           this.permissionFormForm.value,
           this.permissionFormId
         ));
@@ -196,7 +196,7 @@ export class PermissionFormComponent {
   };
   refreshToken = async () => {
     try {
-      const res: any = lastValueFrom(this._permissionFormService.refreshToken());
+      const res: any = await lastValueFrom(this._permissionFormService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

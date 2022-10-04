@@ -10,7 +10,7 @@ export class RefreshTokenService {
   constructor(private _httpClient: HttpClient) { }
 
   refreshToken(url: string) {
-    return lastValueFrom(this._httpClient.get(
+    return await lastValueFrom(this._httpClient.get(
       `${url}/auth/refresh-token`, {
       headers: {
         'Authorization': `Bearer ${sessionStorage.getItem('refreshToken')}`

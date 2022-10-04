@@ -71,7 +71,7 @@ export class RelatedUserTableComponent {
   }
 
   setRelatedUserTableService = (filter: string = "") => {
-    lastValueFrom(this._relatedUserTableService
+    await lastValueFrom(this._relatedUserTableService
       .getAll(filter))
       .then((result: any) => {
         this.relatedUserTableDataSource = result.data.result;
@@ -104,7 +104,7 @@ export class RelatedUserTableComponent {
                 ? this._router.url.split(`/${this.relatedUserTableId}`)[0]
                 : this._router.url;
             this.isLoading = true;
-            lastValueFrom(this._relatedUserTableService.delete(res.id));
+            await lastValueFrom(this._relatedUserTableService.delete(res.id));
             this.redirectTo(routeToGo);
             this.isLoading = false;
           } catch (error: any) {
@@ -119,7 +119,7 @@ export class RelatedUserTableComponent {
 
   refreshToken = async () => {
     try {
-      const res: any = lastValueFrom(this._relatedUserTableService.refreshToken());
+      const res: any = await lastValueFrom(this._relatedUserTableService.refreshToken());
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

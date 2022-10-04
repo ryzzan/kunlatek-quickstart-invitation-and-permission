@@ -50,7 +50,7 @@ export class LoginComponent {
     if (params.token) {
       const token = params.token;
       try {
-        const result: any = lastValueFrom(this._auth
+        const result: any = await lastValueFrom(this._auth
           .getUserData(token));
         if (result?.statusCode === 200) {
           this.setSessionStorage(result.data);
