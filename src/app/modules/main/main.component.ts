@@ -93,6 +93,8 @@ export class MainComponent implements OnInit {
   logout = async () => {
     try {
       await this._auth.signOut();
+
+      this.router.navigate(['/']);
     } catch (error: any) {
       const message = this._errorHandler.apiErrorMessage(error.message);
       this.sendErrorMessage(message);
