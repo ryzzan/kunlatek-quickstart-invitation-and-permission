@@ -52,7 +52,7 @@ export class MainComponent implements OnInit {
         this.menu.push({
           router: `/main/${permission.module.route}`,
           title: `${permission.module.name}`,
-          icon: 'dashboard',
+          icon: `${permission.module.icon || 'dashboard'}`,
           itens: [],
         });
       });
