@@ -39,3 +39,21 @@ export function calculate(params: { operator: MathOperatorEnum, elements: any[],
 
     return total
 }
+
+export function calculateArray(params: { array: any[], fieldsArray: string[], composedField: string, operator: MathOperatorEnum, roundTo?: number }) {
+    let array = params.array;
+    for (let arrayIndex = 0; arrayIndex < array.length; arrayIndex++) {
+        const element = array[arrayIndex]
+
+        let elements: any[] = []
+        for (let fieldsIndex = 0; fieldsIndex < params.fieldsArray.length; fieldsIndex++) {
+            const field = params.fieldsArray[fieldsIndex];
+            elements = [...elements, element[field]]
+        }
+
+        array[arrayIndex][params.composedField] = calculate({ operator: params.operator, elements, roundTo: params.roundTo })
+
+    }
+
+    return array;
+}
