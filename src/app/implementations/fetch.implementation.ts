@@ -12,7 +12,7 @@ export class FetchImplementation implements IHttp {
 
         const responseJson = await response.json();
 
-        if (responseJson?.statusCode !== 200)
+        if (responseJson?.statusCode !== 200 && responseJson?.statusCode !== 201)
             throw new Error(responseJson?.logMessage);
 
         return responseJson;
@@ -30,7 +30,7 @@ export class FetchImplementation implements IHttp {
 
         const responseJson = await response.json();
 
-        if (responseJson?.statusCode !== 200)
+        if (responseJson?.statusCode !== 200 && responseJson?.statusCode !== 201)
             throw new Error(responseJson?.logMessage);
 
         return responseJson;
@@ -48,7 +48,7 @@ export class FetchImplementation implements IHttp {
 
         const responseJson = await response.json();
 
-        if (responseJson?.statusCode !== 200)
+        if (responseJson?.statusCode !== 200 && responseJson?.statusCode !== 201)
             throw new Error(responseJson?.logMessage);
 
         return responseJson;
@@ -65,7 +65,7 @@ export class FetchImplementation implements IHttp {
 
         const responseJson = await response.json();
 
-        if (responseJson?.statusCode !== 200)
+        if (responseJson?.statusCode !== 200 && responseJson?.statusCode !== 201)
             throw new Error(responseJson?.logMessage);
 
         return responseJson;
