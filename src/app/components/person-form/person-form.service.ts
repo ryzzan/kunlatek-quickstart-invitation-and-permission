@@ -4,6 +4,7 @@ import {
 import {
   Injectable
 } from '@angular/core';
+import { Http } from 'src/app/implementations';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
@@ -11,9 +12,18 @@ import { environment } from 'src/environments/environment';
   BASE_URL = environment.baseUrl;
   constructor(private _httpClient: HttpClient) { }
   save(body: any) {
-    return this._httpClient.post(`${this.BASE_URL}/auth/signup`, body, {
-      headers: {
-        'Authorization': `Bearer ${sessionStorage.getItem('tokenToRegister')}`
+    // return this._httpClient.post(`${this.BASE_URL}/auth/signup`, body, {
+    //   headers: {
+    //     'Authorization': `Bearer ${sessionStorage.getItem('tokenToRegister')}`
+    //   }
+    // });
+    return Http.post({
+      route: `${this.BASE_URL}/auth/signup`,
+      body,
+      options: {
+        headers: {
+          'Authorization': `Bearer ${sessionStorage.getItem('tokenToRegister')}`
+        }
       }
     });
   };

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormGroupDirective } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
-import { lastValueFrom } from "rxjs";
+// import { lastValueFrom } from "rxjs";
 import { MyErrorHandler } from "../../utils/error-handler";
 import { RemoveConfirmationDialogComponent } from "../remove-confirmation-dialog/remove-confirmation-dialog.component";
 import { PermissionTableService } from "./permission-table.service";
@@ -72,7 +72,8 @@ export class PermissionTableComponent {
 
   setPermissionTableService = async (filter: string = "") => {
     try {
-      const result: any = await lastValueFrom(this._permissionTableService.getAll(filter));
+      // const result: any = await lastValueFrom(this._permissionTableService.getAll(filter));
+      const result: any = await this._permissionTableService.getAll(filter);
       this.permissionTableDataSource = result.data.result;
       this.isLoading = false;
     } catch (error: any) {
@@ -102,7 +103,8 @@ export class PermissionTableComponent {
                 ? this._router.url.split(`/${this.permissionTableId}`)[0]
                 : this._router.url;
             this.isLoading = true;
-            await lastValueFrom(this._permissionTableService.delete(res.id));
+            // await lastValueFrom(this._permissionTableService.delete(res.id));
+            await this._permissionTableService.delete(res.id);
             this.redirectTo(routeToGo);
             this.isLoading = false;
           } catch (error: any) {
@@ -117,7 +119,8 @@ export class PermissionTableComponent {
 
   refreshToken = async () => {
     try {
-      const res: any = await lastValueFrom(this._permissionTableService.refreshToken());
+      // const res: any = await lastValueFrom(this._permissionTableService.refreshToken());
+      const res: any = await this._permissionTableService.refreshToken();
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormGroupDirective } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
-import { lastValueFrom } from "rxjs";
+// import { lastValueFrom } from "rxjs";
 import { MyErrorHandler } from "../../utils/error-handler";
 import { RemoveConfirmationDialogComponent } from "../remove-confirmation-dialog/remove-confirmation-dialog.component";
 import { InvitationTableService } from "./invitation-table.service";
@@ -71,7 +71,8 @@ export class InvitationTableComponent {
 
   setInvitationTableService = async (filter: string = "") => {
     try {
-      const result: any = await lastValueFrom(this._invitationTableService.getAll(filter));
+      // const result: any = await lastValueFrom(this._invitationTableService.getAll(filter));
+      const result: any = await this._invitationTableService.getAll(filter);
       this.invitationTableDataSource = result.data.result;
       this.isLoading = false;
     } catch (error: any) {
@@ -101,7 +102,8 @@ export class InvitationTableComponent {
                 ? this._router.url.split(`/${this.invitationTableId}`)[0]
                 : this._router.url;
             this.isLoading = true;
-            await lastValueFrom(this._invitationTableService.delete(res.id));
+            // await lastValueFrom(this._invitationTableService.delete(res.id));
+            await this._invitationTableService.delete(res.id);
             this.redirectTo(routeToGo);
             this.isLoading = false;
           } catch (error: any) {
@@ -116,7 +118,8 @@ export class InvitationTableComponent {
 
   refreshToken = async () => {
     try {
-      const res: any = await lastValueFrom(this._invitationTableService.refreshToken());
+      // const res: any = await lastValueFrom(this._invitationTableService.refreshToken());
+      const res: any = await this._invitationTableService.refreshToken();
       if (res) {
         sessionStorage.setItem("token", res?.data.authToken);
         sessionStorage.setItem("refreshToken", res?.data.authRefreshToken);

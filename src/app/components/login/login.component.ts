@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { MyErrorHandler } from "../../utils/error-handler";
 
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { lastValueFrom } from "rxjs";
+// import { lastValueFrom } from "rxjs";
 import { environment } from "src/environments/environment";
 import { UserInterface } from "../../interfaces/autentikigo";
 
@@ -50,8 +50,8 @@ export class LoginComponent {
     if (params.token) {
       const token = params.token;
       try {
-        const result: any = await lastValueFrom(this._auth
-          .getUserData(token));
+        // const result: any = await lastValueFrom(this._auth.getUserData(token));
+        const result: any = await this._auth.getUserData(token);
         if (result?.statusCode === 200) {
           this.setSessionStorage(result.data);
           this.router.navigate(["/main"]);
