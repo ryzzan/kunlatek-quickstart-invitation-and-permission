@@ -19,10 +19,11 @@ import { environment } from 'src/environments/environment';
     // });
     return Http.post({
       route: `${this.BASE_URL}/auth/signup`,
-      body,
+      body: JSON.stringify(body),
       options: {
         headers: {
-          'Authorization': `Bearer ${sessionStorage.getItem('tokenToRegister')}`
+          'Authorization': `Bearer ${sessionStorage.getItem('tokenToRegister')}`,
+          'Content-Type': 'application/json',
         }
       }
     });

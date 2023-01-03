@@ -56,10 +56,11 @@ export class PermissionFormService {
     return Http
       .post({
         route: `${this.BASE_URL}/__permission-groups`,
-        body,
+        body: JSON.stringify(body),
         options: {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
           },
         }
       });
@@ -75,10 +76,11 @@ export class PermissionFormService {
     return Http
       .put({
         route: `${this.BASE_URL}/__permission-groups/${id}`,
-        body,
+        body: JSON.stringify(body),
         options: {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            'Content-Type': 'application/json',
           },
         }
       });
