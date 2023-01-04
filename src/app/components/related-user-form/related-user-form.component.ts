@@ -96,6 +96,14 @@ export class RelatedUserFormComponent {
     ],
 
     permissionGroupId: [null, [Validators.required]],
+
+    isUserDisabled: [
+      {
+        value: null,
+        disabled: false,
+      },
+      [],
+    ],
   };
 
   constructor(
@@ -130,6 +138,7 @@ export class RelatedUserFormComponent {
               gender: this.relatedUserFormToEdit.data.person.gender,
               birthday: this.relatedUserFormToEdit.data.person.birthday,
               uniqueId: this.relatedUserFormToEdit.data.person.uniqueId,
+              isUserDisabled: this.relatedUserFormToEdit.data.isUserDisabled,
             };
           }
 
@@ -140,6 +149,7 @@ export class RelatedUserFormComponent {
               permissionGroupId: this.relatedUserFormToEdit.data.permissionGroupId,
               businesName: this.relatedUserFormToEdit.data.company.businessName,
               uniqueId: this.relatedUserFormToEdit.data.company.uniqueId,
+              isUserDisabled: this.relatedUserFormToEdit.data.isUserDisabled,
             };
           }
 

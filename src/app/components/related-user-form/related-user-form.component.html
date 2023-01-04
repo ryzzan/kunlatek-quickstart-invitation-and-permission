@@ -59,6 +59,11 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
+
+      <mat-checkbox matInput color="primary" formControlName="isUserDisabled">
+        Desabilitar usuário
+      </mat-checkbox>
+
       <mat-card-actions>
         <button mat-raised-button color="primary" [disabled]="!relatedUserFormForm.valid || isLoading">
           <mat-icon>{{isAddModule ? "save" : "edit"}}</mat-icon>
