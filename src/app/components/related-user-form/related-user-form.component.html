@@ -5,67 +5,104 @@
   </mat-card-header>
 
   <mat-card-content>
-    <div *ngIf="isLoading" class="loading">
-      <mat-progress-bar color="primary" mode="buffer">
+    <div *ngIf="isLoading"
+         class="loading">
+      <mat-progress-bar color="primary"
+                        mode="buffer">
       </mat-progress-bar>
     </div>
-    <form id="relatedUserForm" [formGroup]="relatedUserFormForm" #relatedUserFormDirective="ngForm"
-      (ngSubmit)="relatedUserFormSubmit(relatedUserFormDirective)" *ngIf="!isLoading">
+    <form id="relatedUserForm"
+          [formGroup]="relatedUserFormForm"
+          #relatedUserFormDirective="ngForm"
+          (ngSubmit)="relatedUserFormSubmit(relatedUserFormDirective)"
+          *ngIf="!isLoading">
 
       <mat-form-field>
         <mat-label>E-mail</mat-label>
-        <input matInput type="email" formControlName="email" required autocomplete="new-password">
+        <input matInput
+               type="email"
+               formControlName="email"
+               required
+               autocomplete="new-password">
       </mat-form-field>
 
       <mat-form-field *ngIf="relatedUserFormToEdit?.data?.person">
         <mat-label>Nome</mat-label>
-        <input matInput type="text" formControlName="name" required autocomplete="new-password">
+        <input matInput
+               type="text"
+               formControlName="name"
+               required
+               autocomplete="new-password">
       </mat-form-field>
 
       <mat-form-field *ngIf="relatedUserFormToEdit?.data?.person">
         <mat-label>Gênero</mat-label>
         <mat-select formControlName="gender">
-          <mat-option *ngFor="let genderItem of genderSelectObject" [value]="genderItem.value"> {{genderItem.label}}
+          <mat-option *ngFor="let genderItem of genderSelectObject"
+                      [value]="genderItem.value"> {{genderItem.label}}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field *ngIf="relatedUserFormToEdit?.data?.person">
-        <input matInput formControlName="birthday" placeholder="Data de criação" required
-          [matDatepicker]="birthdayPicker" [disabled]="true">
-        <mat-datepicker-toggle matSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
-        <mat-datepicker #birthdayPicker [disabled]="false"></mat-datepicker>
+        <input matInput
+               formControlName="birthday"
+               placeholder="Data de criação"
+               required
+               [matDatepicker]="birthdayPicker"
+               [disabled]="true">
+        <mat-datepicker-toggle matSuffix
+                               [for]="birthdayPicker"></mat-datepicker-toggle>
+        <mat-datepicker #birthdayPicker
+                        [disabled]="false"></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>{{relatedUserFormToEdit?.data?.person ? "CPF" : "CNPJ"}}</mat-label>
-        <input matInput type="text" formControlName="uniqueId" required autocomplete="new-password">
+        <input matInput
+               type="text"
+               formControlName="uniqueId"
+               required
+               autocomplete="new-password">
       </mat-form-field>
 
       <mat-form-field *ngIf="relatedUserFormToEdit?.data?.company">
         <mat-label>Nome fantasia</mat-label>
-        <input matInput type="text" formControlName="businessName" required autocomplete="new-password">
+        <input matInput
+               type="text"
+               formControlName="businessName"
+               required
+               autocomplete="new-password">
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Grupo de permissões relacionado</mat-label>
-        <input type="text" aria-label="Grupo de permissões relacionado" formControlName="permissionGroupId" matInput
-          [matAutocomplete]="autoPermissionGroupId" (keyup)="callSetFilteredPermissionGroupId()" required>
+        <input type="text"
+               aria-label="Grupo de permissões relacionado"
+               formControlName="permissionGroupId"
+               matInput
+               [matAutocomplete]="autoPermissionGroupId"
+               (keyup)="callSetFilteredPermissionGroupId()"
+               required>
         <mat-autocomplete #autoPermissionGroupId="matAutocomplete"
-          [displayWith]="displayFnToPermissionGroupId.bind(this)">
+                          [displayWith]="displayFnToPermissionGroupId.bind(this)">
           <mat-option *ngFor="let permissionGroupIdItem of filteredPermissionGroupId"
-            [value]="permissionGroupIdItem._id">
+                      [value]="permissionGroupIdItem._id">
             {{permissionGroupIdItem.name}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
 
-      <mat-checkbox matInput color="primary" formControlName="isUserDisabled">
-        Desabilitar usuário
+      <mat-checkbox matInput
+                    color="primary"
+                    formControlName="isUserDisabled">
+        Usuário desabilitado
       </mat-checkbox>
 
       <mat-card-actions>
-        <button mat-raised-button color="primary" [disabled]="!relatedUserFormForm.valid || isLoading">
+        <button mat-raised-button
+                color="primary"
+                [disabled]="!relatedUserFormForm.valid || isLoading">
           <mat-icon>{{isAddModule ? "save" : "edit"}}</mat-icon>
           {{isAddModule ? "Criar" : "Editar"}}
         </button>
