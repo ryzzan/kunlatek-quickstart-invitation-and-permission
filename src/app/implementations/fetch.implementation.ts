@@ -10,6 +10,12 @@ export class FetchImplementation implements IHttp {
             }
         );
 
+        if (response.status === 204)
+            return {
+                message: 'No content',
+                statusCode: 204,
+            }
+
         const responseJson = await response.json();
 
         if (responseJson?.statusCode !== 200 && responseJson?.statusCode !== 201)
@@ -27,6 +33,12 @@ export class FetchImplementation implements IHttp {
                 ...data.options,
             }
         );
+
+        if (response.status === 204)
+            return {
+                message: 'No content',
+                statusCode: 204,
+            }
 
         const responseJson = await response.json();
 
@@ -46,6 +58,12 @@ export class FetchImplementation implements IHttp {
             }
         );
 
+        if (response.status === 204)
+            return {
+                message: 'No content',
+                statusCode: 204,
+            }
+
         const responseJson = await response.json();
 
         if (responseJson?.statusCode !== 200 && responseJson?.statusCode !== 201)
@@ -62,6 +80,12 @@ export class FetchImplementation implements IHttp {
                 ...data.options,
             }
         );
+
+        if (response.status === 204)
+            return {
+                message: 'No content',
+                statusCode: 204,
+            }
 
         const responseJson = await response.json();
 
