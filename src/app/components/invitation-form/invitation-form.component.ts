@@ -36,6 +36,8 @@ export class InvitationFormComponent {
       [Validators.email, Validators.required],
     ],
 
+    project: [null, []],
+
     permissionGroupId: [null, [Validators.required]],
   };
 
@@ -100,7 +102,7 @@ export class InvitationFormComponent {
             }
             return "";
           }
-        )}]}`;
+        )}]}${this.invitationFormForm.value.project ? `&project=${this.invitationFormForm.value.project}` : ``}`;
 
         // const result: any = await lastValueFrom(this._invitationFormService.permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]")));
         const result: any = await this._invitationFormService.permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]"));
