@@ -27,6 +27,7 @@ export class InvitationFormComponent {
   createOnePermission: any;
 
   filteredPermissionGroupId: Array<any> = [];
+  loadingPermissionGroupId: boolean = false;
   invitationFormBuilder = {
     email: [
       {
@@ -95,6 +96,8 @@ export class InvitationFormComponent {
       const paramsToFilter = ["name"];
 
       if (this.invitationFormForm.value.permissionGroupId.length > 0) {
+        this.loadingPermissionGroupId = true;
+
         const filter = `?filter={"or":[${paramsToFilter.map(
           (element: string) => {
             if (element !== "undefined") {
@@ -107,6 +110,8 @@ export class InvitationFormComponent {
         // const result: any = await lastValueFrom(this._invitationFormService.permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]")));
         const result: any = await this._invitationFormService.permissionGroupIdSelectObjectGetAll(filter.replace("},]", "}]"));
         this.filteredPermissionGroupId = result.data.result;
+        
+        this.loadingPermissionGroupId = false;
         this.isLoading = false;
       }
     } catch (error: any) {
@@ -124,6 +129,10 @@ export class InvitationFormComponent {
   callSetFilteredPermissionGroupId = MyPerformance.debounce(() =>
     this.setFilteredPermissionGroupId()
   );
+  clearPermissionGroupOptions = () => {
+    this.invitationFormForm.get('permissionGroupId')!.setValue(null);
+    this.filteredPermissionGroupId = []
+  }
 
   invitationFormSubmit = async (
     invitationFormDirective: FormGroupDirective
