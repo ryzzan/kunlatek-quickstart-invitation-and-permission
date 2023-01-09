@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RxReactiveFormsModule } from "@rxweb/reactive-form-validators";
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { MyErrorHandler } from './utils/error-handler';
     SocialLoginModule,
     SharedModule,
     BrowserAnimationsModule,
+    RxReactiveFormsModule,
   ],
   providers: [
     MyErrorHandler,
