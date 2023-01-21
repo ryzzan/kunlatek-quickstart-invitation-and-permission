@@ -14,11 +14,11 @@ export class FetchImplementation implements IHttp {
             return {
                 message: 'No content',
                 statusCode: 204,
-            }
+            };
 
         const responseJson = await response.json();
 
-        if (responseJson?.statusCode !== 200 && responseJson?.statusCode !== 201)
+        if (responseJson?.statusCode !== 200 && responseJson?.statusCode !== 201 && responseJson?.statusCode !== 601)
             throw new Error(responseJson?.logMessage);
 
         return responseJson;
@@ -38,7 +38,7 @@ export class FetchImplementation implements IHttp {
             return {
                 message: 'No content',
                 statusCode: 204,
-            }
+            };
 
         const responseJson = await response.json();
 
@@ -62,7 +62,7 @@ export class FetchImplementation implements IHttp {
             return {
                 message: 'No content',
                 statusCode: 204,
-            }
+            };
 
         const responseJson = await response.json();
 
@@ -85,7 +85,7 @@ export class FetchImplementation implements IHttp {
             return {
                 message: 'No content',
                 statusCode: 204,
-            }
+            };
 
         const responseJson = await response.json();
 
