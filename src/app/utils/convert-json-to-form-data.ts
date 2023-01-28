@@ -29,8 +29,10 @@ export function convertJsonToFormData(jsonObject: any, parentKey: any, carryForm
                 } else if (typeof jsonObject[key] === 'boolean') {
                     formData.append(propName, +jsonObject[key] ? '1' : '0');
                 } else {
-                    if (Object.prototype.toString.call(jsonObject[key]) === '[object Date]' && jsonObject[key])
+                    if ((Object.prototype.toString.call(jsonObject[key]) === '[object Date]' && jsonObject[key]) || !isNaN(Date.parse(jsonObject[key]))) {
+                        if (!isNaN(Date.parse(jsonObject[key]))) jsonObject[key] = new Date(jsonObject[key]);
                         jsonObject[key] = jsonObject[key].toDateString();
+                    }
                     formData.append(propName, jsonObject[key]);
                 }
             }
