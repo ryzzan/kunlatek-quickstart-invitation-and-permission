@@ -11,6 +11,8 @@ import {
   ActivatedRoute, Router
 } from '@angular/router';
 // import { lastValueFrom } from 'rxjs';
+import { deleteCookie } from 'src/app/utils/cookie';
+import { environment } from 'src/environments/environment';
 import {
   MyErrorHandler
 } from '../../utils/error-handler';
@@ -29,6 +31,8 @@ export class CompanyFormComponent implements OnInit {
   mobileForm: FormGroup;
   isLoading = false;
   isOptional = false;
+  COOKIE_DOMAIN = environment.cookieDomain;
+
   constructor(
     private router: Router,
     private _formBuilder: FormBuilder,
@@ -96,8 +100,8 @@ export class CompanyFormComponent implements OnInit {
 
   async companyFormSubmit() {
     this.isLoading = true;
-    const timestamp = this.addHours(new Date(this.mainDataForm.value.birthday), 0);
-    this.mainDataForm.value.birthday = new Date(timestamp);
+    const timestamp = this.addHours(new Date(this.mainDataForm.value.birthday), 3);
+    this.mainDataForm.value.birthday = new Date(timestamp).getTime();
     try {
       // const result: any = await lastValueFrom(this._companyFormService.save(this.mainDataForm.value));
       const result: any = await this._companyFormService.save(this.mainDataForm.value);
@@ -105,6 +109,7 @@ export class CompanyFormComponent implements OnInit {
       const message = result.message;
       this._errorHandler.apiErrorMessage(result.message);
       this.sendErrorMessage(message);
+      deleteCookie('signup-token', this.COOKIE_DOMAIN);
       this.router.navigate(['/login']);
     } catch (error: any) {
       this.isLoading = false;

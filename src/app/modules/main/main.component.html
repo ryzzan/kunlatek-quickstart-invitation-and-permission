@@ -19,7 +19,7 @@
                 (selectionChange)="changePermissionIndex(permissionIndex)">
       <mat-option *ngFor="let owner of permissionGroupsOwners; let i = index"
                   [value]="i">
-        {{owner.owner.name}}
+        {{owner.ownerId?.name}}
       </mat-option>
     </mat-select>
   </mat-form-field>

@@ -6,8 +6,9 @@ import { MyErrorHandler } from "../../utils/error-handler";
 
 import { MatSnackBar } from "@angular/material/snack-bar";
 // import { lastValueFrom } from "rxjs";
+import { getCookie } from "src/app/utils/cookie";
 import { environment } from "src/environments/environment";
-import { UserInterface } from "../../interfaces/autentikigo";
+import { ICompany, IPerson } from "../../interfaces/autentikigo";
 
 export interface ParamsI {
   token?: string;
@@ -35,37 +36,37 @@ export class LoginComponent {
 
   signInWithGoogle = () => {
     this.isLoading = true;
-    window.location.replace(`${environment.baseUrl}/auth/google-signin`);
+    window.location.replace(`${environment.baseUrl}/auth/login/google`);
   };
 
   signInWithApple = () => {
     this.isLoading = true;
-    window.location.replace(`${environment.baseUrl}/auth/apple-signin`);
+    window.location.replace(`${environment.baseUrl}/auth/login/apple`);
   };
 
   setAuthentication = async () => {
-    this._auth.signOut();
-    const params: ParamsI = this.route.snapshot.queryParams;
+    // this._auth.signOut();
 
-    if (params.token) {
-      const token = params.token;
-      try {
-        // const result: any = await lastValueFrom(this._auth.getUserData(token));
-        const result: any = await this._auth.getUserData(token);
-        if (result?.statusCode === 200) {
-          this.setSessionStorage(result.data);
-          this.router.navigate(["/main"]);
-        }
+    try {
+      const authToken = getCookie('auth-token');
+      const signupToken = getCookie('signup-token');
 
-        if (result?.statusCode === 601) {
-          sessionStorage.setItem("tokenToRegister", token);
-          this.router.navigate(["/signup"]);
-        }
+      if (authToken) {
+        const profileResult: any = (await this._auth.getUserData()).data;
+        const permissionResult: any = (await this._auth.getUserPermissions()).data;
 
-      } catch (error: any) {
-        const message = this._errorHandler.apiErrorMessage(error.message);
-        this.sendErrorMessage(message);
+        if (profileResult?.corporateName) this.setCompanySessionStorage(profileResult as ICompany, permissionResult);
+        else this.setPersonSessionStorage(profileResult as IPerson, permissionResult);
+
+        this.router.navigate(["/main"]);
+      } else if (signupToken) {
+        sessionStorage.setItem("tokenToRegister", signupToken);
+        this.router.navigate(["/signup"]);
       }
+
+    } catch (error: any) {
+      const message = this._errorHandler.apiErrorMessage(error.message);
+      this.sendErrorMessage(message);
     }
 
     this.isLoading = false;
@@ -75,39 +76,33 @@ export class LoginComponent {
     }
   };
 
-  setSessionStorage = (data: UserInterface) => {
-    sessionStorage.setItem("_id", data.userData._id);
-    sessionStorage.setItem("token", data.authToken);
-    sessionStorage.setItem("refreshToken", data.authRefreshToken);
-    sessionStorage.setItem("email", data.userData.email);
-    sessionStorage.setItem(
-      "permission",
-      JSON.stringify(data.userData.permissionGroups)
-    );
+  setPersonSessionStorage = (profile: IPerson, permissions: any[]) => {
+    sessionStorage.setItem("_id", profile.userId._id);
+    sessionStorage.setItem("email", profile.userId.email);
+    sessionStorage.setItem("permission", JSON.stringify(permissions));
 
-    if (data.userData.person) {
-      sessionStorage.setItem("birthday", data.userData.person.birthday);
-      sessionStorage.setItem("country", data.userData.person.country);
-      sessionStorage.setItem("gender", data.userData.person.gender);
-      sessionStorage.setItem("mother", data.userData.person.mother);
-      sessionStorage.setItem("name", data.userData.person.name);
-      sessionStorage.setItem("uniqueId", data.userData.person.uniqueId);
-      sessionStorage.setItem("personId", data.userData.person._id);
-    }
+    sessionStorage.setItem("birthday", profile.birthday);
+    sessionStorage.setItem("country", profile.country);
+    sessionStorage.setItem("gender", profile.gender);
+    sessionStorage.setItem("mother", profile.mother);
+    sessionStorage.setItem("name", profile.name);
+    sessionStorage.setItem("uniqueId", profile.uniqueId);
+    sessionStorage.setItem("personId", profile._id);
+  };
 
-    if (data.userData.company) {
-      sessionStorage.setItem("birthday", data.userData.company.birthday);
-      sessionStorage.setItem("cnae", data.userData.company.cnae);
-      sessionStorage.setItem(
-        "corporateName",
-        data.userData.company.corporateName
-      );
-      sessionStorage.setItem("tradeName", data.userData.company.tradeName);
-      sessionStorage.setItem("companyEmail", data.userData.company.email);
-      sessionStorage.setItem("responsible", data.userData.company.responsible);
-      sessionStorage.setItem("uniqueId", data.userData.company.uniqueId);
-      sessionStorage.setItem("companyId", data.userData.company._id);
-    }
+  setCompanySessionStorage = (profile: ICompany, permissions: any[]) => {
+    sessionStorage.setItem("_id", profile.userId._id);
+    sessionStorage.setItem("email", profile.userId.email);
+    sessionStorage.setItem("permission", JSON.stringify(permissions));
+
+    sessionStorage.setItem("birthday", profile.birthday);
+    sessionStorage.setItem("cnae", profile.cnae);
+    sessionStorage.setItem("corporateName", profile.corporateName);
+    sessionStorage.setItem("tradeName", profile.tradeName);
+    sessionStorage.setItem("companyEmail", profile.email);
+    sessionStorage.setItem("responsible", profile.responsible);
+    sessionStorage.setItem("uniqueId", profile.uniqueId);
+    sessionStorage.setItem("companyId", profile._id);
   };
 
   sendErrorMessage = (errorMessage: string) => {
@@ -116,3 +111,4 @@ export class LoginComponent {
     });
   };
 }
+

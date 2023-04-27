@@ -1,10 +1,8 @@
 import {
-  HttpClient
-} from '@angular/common/http';
-import {
   Injectable
 } from '@angular/core';
 import { Http } from 'src/app/implementations';
+import { deleteCookie, getCookie } from 'src/app/utils/cookie';
 import { environment } from 'src/environments/environment';
 
 export enum SocialMedia {
@@ -17,30 +15,40 @@ export enum SocialMedia {
 })
 export class AuthService {
   BASE_URL = environment.baseUrl;
-  constructor(private _httpClient: HttpClient) { }
+  COOKIE_DOMAIN = environment.cookieDomain;
+  constructor() { }
 
   setAuthenticationToken = (code: string) => {
-    // return this._httpClient.get(`${this.BASE_URL}/auth/token?code=${code}`);
     return Http.get({ route: `${this.BASE_URL}/auth/token?code=${code}` });
   };
 
-  getUserData = (token: string) => {
-    // return this._httpClient.get(`${this.BASE_URL}/auth/login`, {
-    //   headers: {
-    //     'authorization': `Bearer ${token}`
-    //   }
-    // });
+  getUserData = () => {
+    const token = getCookie('auth-token');
+
     return Http.get({
-      route: `${this.BASE_URL}/auth/login`,
+      route: `${this.BASE_URL}/autentikigo/user/profile`,
       options: {
         headers: {
-          'authorization': `Bearer ${token}`
+          'authorization': `${token}`
+        }
+      }
+    });
+  };
+
+  getUserPermissions = () => {
+    const token = getCookie('auth-token');
+    return Http.get({
+      route: `${this.BASE_URL}/autentikigo/user/permissions`,
+      options: {
+        headers: {
+          'authorization': `${token}`
         }
       }
     });
   };
 
   signOut = async () => {
+    deleteCookie('auth-token', this.COOKIE_DOMAIN);
     sessionStorage.clear();
   };
 }

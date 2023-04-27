@@ -48,11 +48,11 @@ export class MainComponent implements OnInit {
         this.permissionGroupsOwners = permissions;
       }
 
-      permissions[this.permissionIndex].modulePermissions.forEach((permission: any) => {
+      permissions.forEach((module: any) => {
         this.menu.push({
-          router: `/main/${permission.module.route}`,
-          title: `${permission.module.name}`,
-          icon: `${permission.module.icon || 'dashboard'}`,
+          router: `/main/${module.route}`,
+          title: `${module.name}`,
+          icon: `${module.icon || 'dashboard'}`,
           itens: [],
         });
       });
@@ -93,7 +93,6 @@ export class MainComponent implements OnInit {
   logout = async () => {
     try {
       await this._auth.signOut();
-
       this.router.navigate(['/']);
     } catch (error: any) {
       const message = this._errorHandler.apiErrorMessage(error.message);

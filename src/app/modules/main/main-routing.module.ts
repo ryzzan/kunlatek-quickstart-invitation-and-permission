@@ -76,19 +76,19 @@ export const routes: Routes = [
 })
 export class MainRoutingModule {
   constructor() {
-    let permissions;
     const permissionString = sessionStorage.getItem("permission");
-    if (permissionString !== null) permissions = JSON.parse(permissionString);
-    permissions[0].modulePermissions.forEach((permission: any) => {
+    const permissions = permissionString ? JSON.parse(permissionString) : [];
+
+    permissions.forEach((module: any) => {
       let moduleName = `m.${TextTransformation.setIdToClassName(
-        permission.module.route
+        module.route
       )}Module`;
       if (routes[1]["children"]) {
         routes[1]["children"].push({
-          path: `${permission.module.route}`,
+          path: `${module.route}`,
           loadChildren: () =>
             import(
-              `../${permission.module.route}/${permission.module.route}.module`
+              `../${module.route}/${module.route}.module`
             ).then((m) => eval(moduleName)),
           canActivate: [MenuGuard],
         });
