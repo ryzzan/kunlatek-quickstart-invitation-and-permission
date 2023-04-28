@@ -126,11 +126,13 @@ export class PersonFormComponent implements OnInit {
             this._errorHandler.apiErrorMessage(error.message);
             this.sendErrorMessage(message);
             this.router.navigate(['/login']);
+            this.isLoading = false;
             break;
 
           default:
             this._errorHandler.apiErrorMessage(error.message);
             this.sendErrorMessage(message);
+            this.isLoading = false;
             break;
         }
       }
