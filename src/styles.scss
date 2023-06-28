@@ -42,6 +42,17 @@ mat-form-field {
   width: 250px;
 }
 
+mat-list {
+  display: flex !important;
+  gap: 5px !important;
+}
+
+mat-list mat-list-item {
+  width: auto !important;
+  height: auto !important;
+  margin: 20px 0 !important;
+}
+
 mat-slide-toggle {
   margin-right: 20px;
 }
