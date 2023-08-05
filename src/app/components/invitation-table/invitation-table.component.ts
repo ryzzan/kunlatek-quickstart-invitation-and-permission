@@ -116,6 +116,18 @@ export class InvitationTableComponent {
       });
   };
 
+  resendInvitation = async (id: string) => {
+    try {
+      const res: any = await this._invitationTableService.sendInvitation(id);
+      if (res) {
+        this._snackbar.open('Convite enviado!');
+      }
+    } catch (error: any) {
+      const message = this._errorHandler.apiErrorMessage(error.message);
+      this.sendErrorMessage(message);
+    }
+  };
+
   refreshToken = async () => {
     try {
       // const res: any = await lastValueFrom(this._invitationTableService.refreshToken());

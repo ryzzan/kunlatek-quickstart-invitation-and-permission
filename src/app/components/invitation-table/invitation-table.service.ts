@@ -11,12 +11,6 @@ export class InvitationTableService {
   constructor(private _httpClient: HttpClient) { }
 
   getAll(filter: string = "") {
-    // return this._httpClient
-    //   .get(`${this.BASE_URL}/__invitations${filter}`, {
-    //     headers: {
-    //       Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-    //     },
-    //   });
     return Http
       .get({
         route: `${this.BASE_URL}/__invitations${filter}`,
@@ -29,12 +23,6 @@ export class InvitationTableService {
   }
 
   delete(id: string) {
-    // return this._httpClient
-    //   .delete(`${this.BASE_URL}/__invitations/${id}`, {
-    //     headers: {
-    //       Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-    //     },
-    //   });
     return Http
       .delete({
         route: `${this.BASE_URL}/__invitations/${id}`,
@@ -47,12 +35,6 @@ export class InvitationTableService {
   }
 
   find(id: string) {
-    // return this._httpClient
-    //   .get(`${this.BASE_URL}/__invitations/${id}`, {
-    //     headers: {
-    //       Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-    //     },
-    //   });
     return Http
       .get({
         route: `${this.BASE_URL}/__invitations/${id}`,
@@ -65,18 +47,24 @@ export class InvitationTableService {
   }
 
   refreshToken() {
-    // return this._httpClient
-    //   .get(`${this.BASE_URL}/auth/refresh-token`, {
-    //     headers: {
-    //       Authorization: `Bearer ${sessionStorage.getItem("refreshToken")}`,
-    //     },
-    //   });
     return Http
       .get({
         route: `${this.BASE_URL}/auth/refresh-token`,
         options: {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("refreshToken")}`,
+          },
+        }
+      });
+  }
+
+  sendInvitation(id: string) {
+    return Http
+      .get({
+        route: `${this.BASE_URL}/__invitations/send/${id}`,
+        options: {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       });
