@@ -15,7 +15,7 @@ import { InvitationTableService } from "./invitation-table.service";
 })
 export class InvitationTableComponent {
   invitationTableId: string = "";
-  invitationTableDisplayedColumns: string[] = ["email", "undefined"];
+  invitationTableDisplayedColumns: string[] = ["email", "status", "undefined"];
   invitationTableDataSource: any = [];
   invitationTableSearchForm: FormGroup;
   isLoading = true;
